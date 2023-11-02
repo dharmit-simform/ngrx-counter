@@ -1,6 +1,6 @@
+import { AppState } from './../../store/app.state';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CounterState } from '../state/counter.state';
 import { customIncrement } from '../state/counter.action';
 
 @Component({
@@ -12,7 +12,7 @@ export class CustomInputCounterComponent {
   value: number;
 
   constructor(
-    private store: Store<{ counter: CounterState }>
+    private store: Store<AppState>
   ) { }
 
   onAdd() {
