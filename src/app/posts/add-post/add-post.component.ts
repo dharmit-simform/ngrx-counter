@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Post } from 'src/app/models/post.model';
 import { AppState } from 'src/app/store/app.state';
 import { addPost } from '../state/posts.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-post',
@@ -14,7 +15,8 @@ export class AddPostComponent implements OnInit {
   postForm: FormGroup;
 
   constructor(
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class AddPostComponent implements OnInit {
       const post: Post = this.postForm.value;
       this.store.dispatch(addPost({ post }));
       this.postForm.reset();
+      this._router.navigate(['../posts']);
     }
   }
 }
