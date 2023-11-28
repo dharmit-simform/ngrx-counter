@@ -12,6 +12,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { appReducer } from './store/app.state';
+import { AuthEffects } from './auth/state/auth.effects';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,8 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
     ReactiveFormsModule,
     HttpClientModule,
     NgHttpLoaderModule.forRoot(),
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({}),
+    EffectsModule.forRoot([AuthEffects]),
+    StoreModule.forRoot(appReducer),
     StoreDevtoolsModule.instrument({ logOnly: !isDevMode() })
   ],
   providers: [],

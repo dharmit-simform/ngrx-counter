@@ -1,16 +1,16 @@
 import { authReducer } from "../auth/state/auth.reducer";
+import { AUTH_STATE_NAME, AuthState } from "../auth/state/auth.state";
 import { counterReducer } from "../counter/state/counter.reducer";
+import { COUNTER_STATE_NAME } from "../counter/state/counter.selector";
 import { CounterState } from "../counter/state/counter.state";
 import { postsReducer } from "../posts/state/posts.reducer";
+import { POST_STATE_NAME } from "../posts/state/posts.selector";
 import { PostsState } from "../posts/state/posts.state";
 
 export interface AppState {
-  counter: CounterState;
-  posts: PostsState;
+  [AUTH_STATE_NAME]: AuthState
 }
 
 export const appReducer = {
-  counter: counterReducer,
-  posts: postsReducer,
-  auth: authReducer
+  [AUTH_STATE_NAME]: authReducer
 }
