@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { autoLogin, loginStart, loginSuccess, registerStart, registerSuccess } from "./auth.action";
+import { autoLogin, autoLogout, loginStart, loginSuccess, registerStart, registerSuccess } from "./auth.action";
 import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { AuthService } from "../auth.service";
 import { CustomToastService } from "src/app/shared/service/custom-toast.service";
@@ -23,6 +23,7 @@ export class AuthEffects {
           user['token'] = data.responseObject.token;
           this._authService.saveUser(user);
           this._customToast.success('Login Successful');
+          this.router.navigate(['/']);
           return loginSuccess({ user });
         }),
         catchError((err) => {
@@ -41,7 +42,8 @@ export class AuthEffects {
           map((data) => {
             const user = data.responseObject.user;
             user['token'] = data.responseObject.token;
-            this._customToast.success('Registration Successful')
+            this._customToast.success('Registration Successful');
+            this.router.navigate(['/']);
             return registerSuccess({ user })
           }),
           catchError((err) => {
@@ -56,19 +58,20 @@ export class AuthEffects {
   autoLogin$ = createEffect(() => {
     return this.action$.pipe(
       ofType(autoLogin),
-      map((action) => {
+      mergeMap((action) => {
         const user = this._authService.getUser();
-        console.log(user);
+        return of(loginSuccess({ user }));
+      })
+    )
+  })
+
+  logout$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(autoLogout),
+      map((action) => {
+        this._authService.logout();
+        this.router.navigate(['/auth']);
       })
     )
   }, { dispatch: false })
-
-  loginRedirect$ = createEffect(() => {
-    return this.action$.pipe(
-      ofType(...[loginSuccess, registerSuccess]),
-      tap((action) => {
-        this.router.navigate(['/']);
-      })
-    )
-  }, { dispatch: false });
 }

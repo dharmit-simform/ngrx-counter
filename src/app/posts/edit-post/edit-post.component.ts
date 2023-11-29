@@ -38,16 +38,16 @@ export class EditPostComponent implements OnInit, OnDestroy {
   createForm() {
     this.postForm = new FormGroup({
       title: new FormControl(this.post.title, [Validators.required, Validators.minLength(6)]),
-      description: new FormControl(this.post.description, [Validators.required, Validators.minLength(10)]),
+      body: new FormControl(this.post.body, [Validators.required, Validators.minLength(10)]),
     });
   }
 
   onEditPost() {
     if (this.postForm.valid) {
       const post: Post = {
-        id: this.post.id,
+        _id: this.post._id,
         title: this.postForm.value.title,
-        description: this.postForm.value.description,
+        body: this.postForm.value.body,
       }
 
       this.store.dispatch(editPost({ post }));

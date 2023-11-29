@@ -1,5 +1,13 @@
 export interface Post {
-  id?: string
+  _id?: string
   title: string
-  description: string
+  body: string
+  likes?: [string]
+  genre?: string
+  userInfo?: {
+    name: string
+    username: string
+  }
+  createdAt?: string
+  updatedAt?: string
 }

@@ -7,6 +7,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { postsReducer } from './state/posts.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { PostsEffects } from './state/posts.effects';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {
@@ -35,6 +38,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbTooltip,
+    EffectsModule.forFeature([PostsEffects]),
     StoreModule.forFeature('posts', postsReducer),
     RouterModule.forChild(routes)
   ]
