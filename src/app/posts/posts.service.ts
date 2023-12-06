@@ -23,4 +23,12 @@ export class PostsService {
   addPost(post: Post): Observable<any> {
     return this.http.post<any>('/api/posts/create-post', post, httpOptions);
   }
+
+  editPost(post: Post, postId: string): Observable<any> {
+    return this.http.put<any>(`/api/posts/edit-post/${postId}`, post, httpOptions);
+  }
+
+  deletePost(postId: string): Observable<any> {
+    return this.http.delete<any>(`/api/posts/delete-post/${postId}`, httpOptions)
+  }
 }

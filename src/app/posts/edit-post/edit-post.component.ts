@@ -44,13 +44,12 @@ export class EditPostComponent implements OnInit, OnDestroy {
 
   onEditPost() {
     if (this.postForm.valid) {
-      const post: Post = {
-        _id: this.post._id,
-        title: this.postForm.value.title,
-        body: this.postForm.value.body,
-      }
+      const post = { ...this.post };
+      post.title = this.postForm.value.title;
+      post.body = this.postForm.value.body;
 
-      this.store.dispatch(editPost({ post }));
+
+      this.store.dispatch(editPost({ post, postId: this.post._id }));
       this.router.navigate(['../posts']);
     }
   }
