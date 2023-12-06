@@ -16,6 +16,8 @@ import { appReducer } from './store/app.state';
 import { AuthEffects } from './auth/state/auth.effects';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthService } from './auth/auth.service';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { CustomSerializer } from './store/router/custom-serializer';
 
 @NgModule({
   declarations: [
@@ -33,14 +35,14 @@ import { AuthService } from './auth/auth.service';
     NgHttpLoaderModule.forRoot(),
     EffectsModule.forRoot([AuthEffects]),
     StoreModule.forRoot(appReducer),
-    StoreDevtoolsModule.instrument({ logOnly: !isDevMode() })
+    StoreDevtoolsModule.instrument({ logOnly: !isDevMode() }),
+    StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer })
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-      deps: [AuthService]
     }
   ],
   bootstrap: [AppComponent]

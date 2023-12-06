@@ -20,6 +20,10 @@ export class PostsService {
     return this.http.get<any>(`/api/posts/all-posts?page=${page}&limit=${limit}&sortBy=${sortBy}`, httpOptions);
   }
 
+  getSinglePost(postId: number): Observable<any> {
+    return this.http.get<any>(`/api/posts/single-post/${postId}`, httpOptions);
+  }
+
   addPost(post: Post): Observable<any> {
     return this.http.post<any>('/api/posts/create-post', post, httpOptions);
   }

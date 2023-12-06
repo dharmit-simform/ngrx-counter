@@ -1,18 +1,15 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, exhaustMap, map, mergeMap, of } from "rxjs";
-import { CustomToastService } from "src/app/shared/service/custom-toast.service";
+import { catchError, exhaustMap, filter, map, mergeMap, of, switchMap } from "rxjs";
 import { PostsService } from "../posts.service";
 import { addPost, addPostSuccess, deletePost, deletePostSuccess, editPost, editPostSuccess, loadPosts, loadPostsSuccess } from "./posts.actions";
+import { ROUTER_NAVIGATION, RouterNavigatedAction } from "@ngrx/router-store";
 
 @Injectable()
 export class PostsEffects {
   constructor(
     private action$: Actions,
     private _postsService: PostsService,
-    private _customToast: CustomToastService,
-    private router: Router,
   ) { }
 
   loadPosts$ = createEffect(() => {
@@ -86,4 +83,24 @@ export class PostsEffects {
       })
     )
   })
+
+  getSinglePost$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(ROUTER_NAVIGATION),
+      filter((r: RouterNavigatedAction) => {
+        return r.payload.routerState.url.startsWith('/posts/details');
+      }),
+      map((r: RouterNavigatedAction) => {
+        return r.payload.routerState['params']['id'];
+      }),
+      switchMap((id) => {
+        return this._postsService.getSinglePost(id).pipe(
+          map((post) => {
+            const postData = [{ ...post, id }];
+            return loadPostsSuccess({ posts: postData });
+          })
+        );
+      })
+    );
+  });
 }
