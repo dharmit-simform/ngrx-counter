@@ -5,31 +5,20 @@
   <div class="col-md-6 text-end">
     <button class="btn btn-outline-primary" [routerLink]="['add']">Add Post</button>
   </div>
-  <table class="table table-hover table-striped align-middle text-start" *ngIf="posts$ | async as posts">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let post of posts; index as i">
-        <td>{{i+1}}</td>
-        <td>
-          <p [ngbTooltip]="post.title" placement="start">{{post.title | slice:0:10}}...</p>
-        </td>
-        <td>
-          <p [ngbTooltip]="post.body" placement="start">{{post.body | slice:0:15}}...</p>
-        </td>
-        <td>
-          <a class="btn btn-outline-primary btn-sm me-1" [routerLink]="['edit', post._id]">Edit</a>
+  <div class="row" *ngIf="posts$ | async as posts">
+    <div class="col-md-4 mt-4 text-start" *ngFor="let post of posts;">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{post.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">{{post.userInfo.name}}</h6>
+          <p class="card-text">{{post.body}}</p>
+          <a href="#" class="card-link"><a class="btn btn-outline-primary btn-sm me-1"
+              [routerLink]="['edit', post._id]">Edit</a></a>
           <button class="btn btn-sm btn-outline-danger ms-1" (click)="onDelete(post._id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="row">

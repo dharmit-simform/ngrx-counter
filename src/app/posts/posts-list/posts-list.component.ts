@@ -20,7 +20,7 @@ export class PostsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(loadPosts({ page: 1, limit: 10, sortBy: '_id' }));
+    this.store.dispatch(loadPosts({ page: 1, limit: 10, sortBy: 'createdAt' }));
     this.posts$ = this.store.select(getPosts);
   }
 

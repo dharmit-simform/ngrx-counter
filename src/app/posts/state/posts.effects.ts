@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { catchError, exhaustMap, map, of } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of } from "rxjs";
 import { CustomToastService } from "src/app/shared/service/custom-toast.service";
 import { PostsService } from "../posts.service";
-import { loadPostsSuccess, loadPosts } from "./posts.actions";
+import { addPost, addPostSuccess, loadPosts, loadPostsSuccess } from "./posts.actions";
 
 @Injectable()
 export class PostsEffects {
@@ -15,18 +15,32 @@ export class PostsEffects {
     private router: Router,
   ) { }
 
-  posts$ = createEffect(() => {
+  loadPosts$ = createEffect(() => {
     return this.action$.pipe(
       ofType(loadPosts),
       exhaustMap((action) => {
         return this._postsService.getAllPosts(action.page, action.limit, action.sortBy).pipe(
           map((data) => {
             const posts = data.responseObject.posts;
-            return loadPostsSuccess({ posts, count: data.responseObject.totalElements, pages: data.responseObject.totalPages });
+            return loadPostsSuccess({ posts });
           }),
           catchError((err) => {
             console.log(err);
             return of();
+          })
+        )
+      })
+    )
+  });
+
+  addPost$ = createEffect(() => {
+    return this.action$.pipe(
+      ofType(addPost),
+      mergeMap((action) => {
+        return this._postsService.addPost(action.post).pipe(
+          map((data) => {
+            const post = data.responseObject.post;
+            return addPostSuccess({ post });
           })
         )
       })
