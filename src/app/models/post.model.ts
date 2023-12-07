@@ -5,8 +5,8 @@ export interface Post {
   likes?: [string]
   genre?: string
   userInfo?: {
-    name: string
-    username: string
+    name?: string
+    username?: string
   }
   createdAt?: string
   updatedAt?: string

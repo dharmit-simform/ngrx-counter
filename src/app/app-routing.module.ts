@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { PostsListComponent } from './posts/posts-list/posts-list.component';
-import { AddPostComponent } from './posts/add-post/add-post.component';
-import { EditPostComponent } from './posts/edit-post/edit-post.component';
+import { DetailsComponent } from './posts/details/details.component';
 
 const routes: Routes = [
   {
@@ -17,6 +15,10 @@ const routes: Routes = [
   {
     path: 'posts',
     loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule),
+  },
+  {
+    path: 'posts/details/:id',
+    component: DetailsComponent
   },
   {
     path: 'auth',

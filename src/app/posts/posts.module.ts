@@ -10,6 +10,7 @@ import { postsReducer } from './state/posts.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { PostsEffects } from './state/posts.effects';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { DetailsComponent } from './details/details.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
         component: EditPostComponent
       }
     ]
-  },
+  }
 ]
 
 @NgModule({
@@ -33,6 +34,7 @@ const routes: Routes = [
     PostsListComponent,
     AddPostComponent,
     EditPostComponent,
+    DetailsComponent,
   ],
   imports: [
     CommonModule,

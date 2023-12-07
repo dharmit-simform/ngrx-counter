@@ -4,6 +4,8 @@ import { catchError, exhaustMap, filter, map, mergeMap, of, switchMap } from "rx
 import { PostsService } from "../posts.service";
 import { addPost, addPostSuccess, deletePost, deletePostSuccess, editPost, editPostSuccess, loadPosts, loadPostsSuccess } from "./posts.actions";
 import { ROUTER_NAVIGATION, RouterNavigatedAction } from "@ngrx/router-store";
+import { Update } from "@ngrx/entity";
+import { Post } from "src/app/models/post.model";
 
 @Injectable()
 export class PostsEffects {
@@ -37,7 +39,6 @@ export class PostsEffects {
         return this._postsService.addPost(action.post).pipe(
           map((data) => {
             const post = data.responseObject.post;
-            console.log(post);
             return addPostSuccess({ post });
           }),
           catchError((err) => {
@@ -55,8 +56,8 @@ export class PostsEffects {
       mergeMap((action) => {
         return this._postsService.editPost(action.post, action.postId).pipe(
           map((data) => {
-            const post = data.responseObject.post;
-            return editPostSuccess({ post: action.post })
+            const updatedPost: Update<Post> = { id: action.post._id, changes: { ...data.responseObject.post } };
+            return editPostSuccess({ post: updatedPost })
           }),
           catchError((err) => {
             console.log(err);
@@ -95,7 +96,8 @@ export class PostsEffects {
       }),
       switchMap((id) => {
         return this._postsService.getSinglePost(id).pipe(
-          map((post) => {
+          map((data) => {
+            const post = data.responseObject.posts[0];
             const postData = [{ ...post, id }];
             return loadPostsSuccess({ posts: postData });
           })

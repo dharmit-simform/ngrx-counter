@@ -15,6 +15,7 @@
           <a href="#" class="card-link"><a class="btn btn-outline-primary btn-sm me-1"
               [routerLink]="['edit', post._id]">Edit</a></a>
           <button class="btn btn-sm btn-outline-danger ms-1" (click)="onDelete(post._id)">Delete</button>
+          <button class="btn btn-sm btn-outline-secondary ms-1" [routerLink]="['details', post._id]">View</button>
         </div>
       </div>
     </div>
